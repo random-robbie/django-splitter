@@ -43,7 +43,7 @@ func grabURL(URL string, output string, filepathurl string, swg *sizedwaitgroup.
 
 	client := &http.Client{Transport: tr}
 
-	newurl := "https://" + URL + filepathurl
+	newurl := URL + filepathurl
 	resp, err := client.Get(newurl)
 	if err != nil {
 		// handle err
@@ -75,7 +75,7 @@ func grabURL(URL string, output string, filepathurl string, swg *sizedwaitgroup.
 	}
 
 	if resp.StatusCode == 500 {
-		fmt.Println(au.Red("[*] Server Error 500 [*]"))
+		fmt.Println(au.Red("[*] Redirected - Not Found [*]"))
 	}
 
 	if resp.StatusCode == 200 {
