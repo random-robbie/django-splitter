@@ -95,7 +95,7 @@ func grabURL(URL string, output string, filepathurl string, swg *sizedwaitgroup.
 				if err != nil {
 					log.Fatal(err)
 				}
-				fmt.Println(u.Hostname())
+
 
 				capturedfile := outputfile + u.Hostname() + ".txt"
 
