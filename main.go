@@ -22,7 +22,7 @@ import (
 var (
 	fileofurls  = "list.txt"
 	outputfile  = "./cfg/"
-	filepathurl = "/static../settings.py"
+	filepathurl = "/assets../settings/90-local.conf"
 	au          aurora.Aurora
 	colors      = flag.Bool("colors", true, "enable or disable colors")
 )
