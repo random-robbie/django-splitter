@@ -64,32 +64,18 @@ func grabURL(URL string, output string, filepathurl string, swg *sizedwaitgroup.
 
 
 
-	if resp.StatusCode == 404 {
-		fmt.Println(au.Red("[*] Page Not Found [*]"))
-	}
-	if resp.StatusCode == 403 {
-		fmt.Println(au.Red("[*] Access Denied [*]"))
-	}
-	if resp.StatusCode == 401 {
-		fmt.Println(au.Red("[*] Access Denied [*]"))
-	}
-	if resp.StatusCode == 301 {
-		fmt.Println(au.Red("[*] Redirected - Not Found[*]"))
-	}
-	if resp.StatusCode == 302 {
-		fmt.Println(au.Red("[*] Redirected - Not Found [*]"))
+
+
+	if resp.StatusCode >= 300 && resp.StatusCode <= 399 {
+		fmt.Println(au.Red("[*] Redirected ... Not Vulnerable [*]"))
 	}
 
-	if resp.StatusCode == 500 {
-		fmt.Println(au.Red("[*] Server Error [*]"))
-	}
 
-	if resp.StatusCode == 200 {
 		if resp.Body != nil {
 			bodyBytes, nil := ioutil.ReadAll(resp.Body)
 			bodyString := string(bodyBytes)
-			htmlcontent := strings.Contains(bodyString, "<head>")
-			if htmlcontent == false {
+			htmlcontent := strings.Contains(bodyString, "STATIC_URL")
+			if htmlcontent == true {
 
 				u, err := url.Parse(URL)
 				if err != nil {
@@ -110,12 +96,14 @@ func grabURL(URL string, output string, filepathurl string, swg *sizedwaitgroup.
 				fmt.Println(au.Green("[*] Saving to file [*]"))
 				io.Copy(htmlfile, resp.Body)
 
+			} else {
+				fmt.Println(au.Red("[*] Not Vulnerable  [*]"))
 			}
 
 		}
 
 	}
-}
+
 
 func main() {
 	swg := sizedwaitgroup.New(10)
