@@ -54,6 +54,7 @@ func grabURL(URL string, output string, filepathurl string, swg *sizedwaitgroup.
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		fmt.Println(au.Red("[*] There was an issue connecting to the server. [*]"))
+		return 
 	}
 	defer resp.Body.Close()
 
