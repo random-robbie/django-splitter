@@ -16,6 +16,7 @@ import (
 	"github.com/logrusorgru/aurora"
 	"github.com/remeh/sizedwaitgroup"
 	"io/ioutil"
+	"net/url"
 )
 
 var (
@@ -90,8 +91,13 @@ func grabURL(URL string, output string, filepathurl string, swg *sizedwaitgroup.
 			htmlcontent := strings.Contains(bodyString, "<head>")
 			if htmlcontent == false {
 
+				u, err := url.Parse(URL)
+				if err != nil {
+					log.Fatal(err)
+				}
+				fmt.Println(u.Hostname())
 
-				capturedfile := outputfile + URL + ".txt"
+				capturedfile := outputfile + u.Hostname() + ".txt"
 
 				htmlfile, err := os.Create(capturedfile)
 
