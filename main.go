@@ -75,7 +75,7 @@ func grabURL(URL string, output string, filepathurl string, swg *sizedwaitgroup.
 	}
 
 	if resp.StatusCode == 500 {
-		fmt.Println(au.Red("[*] Redirected - Not Found [*]"))
+		fmt.Println(au.Red("[*] Server Error [*]"))
 	}
 
 	if resp.StatusCode == 200 {

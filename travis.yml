@@ -1,0 +1,9 @@
+language: go
+
+go:
+  - "1.10.x"
+  - master
+  
+before_install:
+  - go get -v github.com/logrusorgru/auror
+  - go get -v github.com/remeh/sizedwaitgroup
