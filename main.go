@@ -6,7 +6,6 @@ package main
 
 import (
 	"bufio"
-	"crypto/tls"
 	"flag"
 	"fmt"
 	"io"
@@ -14,7 +13,6 @@ import (
 	"net/http"
 	"os"
 	"strings"
-
 	"github.com/logrusorgru/aurora"
 	"github.com/remeh/sizedwaitgroup"
 	"io/ioutil"
@@ -37,26 +35,32 @@ func grabURL(URL string, output string, filepathurl string, swg *sizedwaitgroup.
 
 	defer swg.Done()
 
-	tr := &http.Transport{
-		TLSClientConfig: &tls.Config{InsecureSkipVerify: true},
-	}
-
-	client := &http.Client{Transport: tr}
 
 	newurl := URL + filepathurl
-	resp, err := client.Get(newurl)
+
+
+
+	req, err := http.NewRequest("GET", newurl, nil)
 	if err != nil {
 		// handle err
-		log.Printf("could not send request: %v", err)
 	}
+	req.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:59.0) Gecko/20100101 Firefox/59.0")
+	req.Header.Set("Accept", "*/*")
+	req.Header.Set("Accept-Language", "en-GB,en;q=0.5")
+	req.Header.Set("Accept-Encoding", "gzip, deflate")
 
-	resp.Header.Set("Accept-Encoding", "gzip, deflate")
-	resp.Header.Set("Accept", "*/*")
-	resp.Header.Set("Accept-Language", "en")
-	resp.Header.Set("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:59.0) Gecko/20100101 Firefox/59.0")
+	req.Header.Set("Connection", "close")
+
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		fmt.Println(au.Red("[*] There was an issue connecting to the server. [*]"))
+	}
+	defer resp.Body.Close()
+
+
 	fmt.Println("[*] Testing ", newurl, "[*]")
 
-	defer resp.Body.Close()
+
 
 	if resp.StatusCode == 404 {
 		fmt.Println(au.Red("[*] Page Not Found [*]"))
