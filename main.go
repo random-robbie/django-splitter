@@ -23,6 +23,7 @@ var (
 	fileofurls  = "list.txt"
 	outputfile  = "./cfg/"
 	filepathurl = "/assets../settings/90-local.conf"
+	keyword = "AUTH_LDAP"
 	au          aurora.Aurora
 	colors      = flag.Bool("colors", true, "enable or disable colors")
 )
@@ -74,7 +75,7 @@ func grabURL(URL string, output string, filepathurl string, swg *sizedwaitgroup.
 		if resp.Body != nil {
 			bodyBytes, nil := ioutil.ReadAll(resp.Body)
 			bodyString := string(bodyBytes)
-			htmlcontent := strings.Contains(bodyString, "STATIC_URL")
+			htmlcontent := strings.Contains(bodyString, keyword)
 			if htmlcontent == true {
 
 				u, err := url.Parse(URL)
